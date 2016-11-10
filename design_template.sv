@@ -32,16 +32,19 @@ module design_template import settings_pkg::*;(
     input  wire                                           clk,
     input  wire                                           reset,
 //-----------------------------------------------------------------------------
-    input  wire        [SIZE_DATA-1:0]                    input_data,
+    input  wire        [DATA_SIZE-1:0]                    input_data,
     input  wire                                           enable,
 //-----------------------------------------------------------------------------
 // Output Ports
 //-----------------------------------------------------------------------------
-    output reg  signed [SIZE_DATA-1:0]                    output_data);
+    output reg  signed [FULL_SIZE-1:0]                    output_data);
 //-----------------------------------------------------------------------------
 // Signal declarations
 //-----------------------------------------------------------------------------
-    reg signed         [SIZE_DATA-1:0]                    shift_reg  [SIZE_SHIFT_REG];
+    reg                                                   reset_synch;
+    reg                [2:0]                              reset_z;
+//-----------------------------------------------------------------------------
+    reg signed         [FULL_SIZE-1:0]                    shift_reg  [SHIFT_REG_SIZE];
 //-----------------------------------------------------------------------------
 // Function Section
 //-----------------------------------------------------------------------------
@@ -54,24 +57,29 @@ module design_template import settings_pkg::*;(
 //-----------------------------------------------------------------------------
 // Process Section
 //-----------------------------------------------------------------------------
-    always_ff @(negedge reset or posedge clk) begin: DESIGN_TEMPLATE_SHIFT_REG
-        if (!reset) begin
-            for (int i = 0; i < SIZE_SHIFT_REG; i++) begin
+    always_ff @(posedge clk) begin: DESIGN_TEMPLATE_RESET_SYNCH
+        reset_z                                          <= {reset_z[1:0], reset};
+        reset_synch                                      <= (reset_z[1] & (~reset_z[2])) ? '1 : '0 ;
+    end: DESIGN_TEMPLATE_RESET_SYNCH
+//-----------------------------------------------------------------------------
+    always_ff @(posedge clk) begin: DESIGN_TEMPLATE_SHIFT_REG
+        if (reset_synch) begin
+            for (int i = 0; i < SHIFT_REG_SIZE; i++) begin
                 shift_reg[i]                             <= '0;
             end
         end else begin
-            shift_reg[0]                                 <= input_data;
-            for (int i = 1; i < SIZE_SHIFT_REG; i++) begin
+             shift_reg[0]                                 <= (input_data[DATA_SIZE-1]) ? {{EXTRA_BITS{1'b1}}, input_data} : {{EXTRA_BITS{1'b0}}, input_data};
+            for (int i = 1; i < SHIFT_REG_SIZE; i++) begin
                 shift_reg[i]                             <= shift_reg[i-1];
             end
         end
     end: DESIGN_TEMPLATE_SHIFT_REG
 //-----------------------------------------------------------------------------
-    always_ff @(negedge reset or posedge clk) begin: DESIGN_TEMPLATE_OUTPUT_DATA
-        if (!reset) begin
+    always_ff @(posedge clk) begin: DESIGN_TEMPLATE_OUTPUT_DATA
+        if (reset_synch) begin
             output_data                                  <= '0;
         end else begin
-            output_data                                  <= enable ? shift_reg[SIZE_SHIFT_REG-1] : '0;
+            output_data                                  <= enable ? shift_reg[SHIFT_REG_SIZE-1] : '0;
         end
     end: DESIGN_TEMPLATE_OUTPUT_DATA
 //-----------------------------------------------------------------------------
