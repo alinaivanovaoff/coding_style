@@ -1,10 +1,11 @@
 //-----------------------------------------------------------------------------
 // Original Author: Alina Ivanova
-// Contact Point: Alina Ivanova (alina.al.ivanova@gmail.com), alinaivanovaoff.com
-// design_template.sv
+// e-mail: alina.al.ivanova@gmail.com
+// web: www.alinaivanovaoff.com
+// module_template.sv
 // Created: 10.26.2016
 //
-// Design File Template.
+// Module Template.
 //
 //-----------------------------------------------------------------------------
 // Copyright (c) 2016 by Alina Ivanova
@@ -25,7 +26,7 @@
 //----------------------------------------------------------------------------- 
 `include "settings_pkg.sv"
 //-----------------------------------------------------------------------------
-module design_template import settings_pkg::*;(
+module module_template import settings_pkg::*;(
 //-----------------------------------------------------------------------------
 // Input Ports
 //-----------------------------------------------------------------------------
@@ -57,12 +58,12 @@ module design_template import settings_pkg::*;(
 //-----------------------------------------------------------------------------
 // Process Section
 //-----------------------------------------------------------------------------
-    always_ff @(posedge clk) begin: DESIGN_TEMPLATE_RESET_SYNCH
+    always_ff @(posedge clk) begin: MODULE_TEMPLATE_RESET_SYNCH
         reset_z                                          <= {reset_z[1:0], reset};
         reset_synch                                      <= (reset_z[1] & (~reset_z[2])) ? '1 : '0 ;
-    end: DESIGN_TEMPLATE_RESET_SYNCH
+    end: MODULE_TEMPLATE_RESET_SYNCH
 //-----------------------------------------------------------------------------
-    always_ff @(posedge clk) begin: DESIGN_TEMPLATE_SHIFT_REG
+    always_ff @(posedge clk) begin: MODULE_TEMPLATE_SHIFT_REG
         if (reset_synch) begin
             for (int i = 0; i < SHIFT_REG_SIZE; i++) begin
                 shift_reg[i]                             <= '0;
@@ -73,14 +74,14 @@ module design_template import settings_pkg::*;(
                 shift_reg[i]                             <= shift_reg[i-1];
             end
         end
-    end: DESIGN_TEMPLATE_SHIFT_REG
+    end: MODULE_TEMPLATE_SHIFT_REG
 //-----------------------------------------------------------------------------
-    always_ff @(posedge clk) begin: DESIGN_TEMPLATE_OUTPUT_DATA
+    always_ff @(posedge clk) begin: MODULE_TEMPLATE_OUTPUT_DATA
         if (reset_synch) begin
             output_data                                  <= '0;
         end else begin
             output_data                                  <= enable ? shift_reg[SHIFT_REG_SIZE-1] : '0;
         end
-    end: DESIGN_TEMPLATE_OUTPUT_DATA
+    end: MODULE_TEMPLATE_OUTPUT_DATA
 //-----------------------------------------------------------------------------
-endmodule: design_template
+endmodule: module_template
