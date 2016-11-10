@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 // Original Author: Alina Ivanova
-// Contact Point: Alina Ivanova (alina.al.ivanova@gmail.com)
-// design_template.v
+// Contact Point: Alina Ivanova (alina.al.ivanova@gmail.com), alinaivanovaoff.com
+// design_template.sv
 // Created: 10.26.2016
 //
 // Design File Template.
@@ -23,9 +23,9 @@
 //-----------------------------------------------------------------------------
 `timescale 1 ns / 1 ps
 //----------------------------------------------------------------------------- 
-import package_settings::*;
+`include "settings_pkg.sv"
 //-----------------------------------------------------------------------------
-module design_template (
+module design_template import settings_pkg::*;(
 //-----------------------------------------------------------------------------
 // Input Ports
 //-----------------------------------------------------------------------------
@@ -37,7 +37,7 @@ module design_template (
 //-----------------------------------------------------------------------------
 // Output Ports
 //-----------------------------------------------------------------------------
-    output reg signed  [SIZE_DATA-1:0]                    output_data);
+    output reg  signed [SIZE_DATA-1:0]                    output_data);
 //-----------------------------------------------------------------------------
 // Signal declarations
 //-----------------------------------------------------------------------------
