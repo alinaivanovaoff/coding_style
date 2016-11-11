@@ -63,8 +63,10 @@ module template_testbench ();
         .reset                                            (reset),
 //-----------------------------------------------------------------------------
         .input_data                                       (ICKData.input_data),
+        .enable                                           (ICKData.enable),
 //-----------------------------------------------------------------------------
-        .output_data                                      (ICKResult.output_data);
+        .output_data                                      (ICKResult.output_data),
+        .output_data_valid                                (ICKResult.output_data_valid));
 //-----------------------------------------------------------------------------
 // Program Section
 //-----------------------------------------------------------------------------
