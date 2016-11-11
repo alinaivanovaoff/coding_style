@@ -37,8 +37,11 @@ program template_test_program import settings_pkg::*; (
 //-----------------------------------------------------------------------------
     initial begin: TEMPLAT_TEST_PROGRAM_INITIAL
         $display("Running program");
+        input_data                                     = 0;
+        enable                                         = 0;
         @(posedge ICKData.reset);
-        $display("After reset");
+//        $display("After reset");
+        #12;
         input_data                                     = 10;
         enable                                         = 1;
 //-----------------------------------------------------------------------------
