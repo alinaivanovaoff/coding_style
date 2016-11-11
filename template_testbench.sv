@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 // Original Author: Alina Ivanova
-// Contact Point: Alina Ivanova (alina.al.ivanova@gmail.com)
+// email: alina.al.ivanova@gmail.com
+// web: www.alinaivanovaoff.com
 // tempalte_testbench.sv
 // Created: 11.01.2016
 //
